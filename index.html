@@ -19,7 +19,7 @@
       transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     }
 
-    /* light / dark variables */
+    /* ダークモード（デフォルト） */
     :root {
       --bg-primary: #0a192f;
       --bg-card: #112240;
@@ -31,7 +31,6 @@
       --accent-hover: #4cd8c0;
       --btn-bg: #1f3a5f;
       --btn-hover: #2a4a7a;
-      --danger: #ff6b6b;
     }
 
     body.light {
@@ -48,7 +47,7 @@
     }
 
     body {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       background-color: var(--bg-primary);
       color: var(--text-primary);
       line-height: 1.5;
@@ -60,7 +59,7 @@
       padding: 1rem;
     }
 
-    /* header */
+    /* ヘッダー */
     .header {
       display: flex;
       flex-wrap: wrap;
@@ -82,7 +81,6 @@
       display: flex;
       gap: 0.75rem;
       align-items: center;
-      flex-wrap: wrap;
     }
     select, .theme-btn {
       background: var(--bg-card);
@@ -92,16 +90,14 @@
       border-radius: 2rem;
       font-size: 0.85rem;
       cursor: pointer;
-      outline: none;
     }
     .theme-btn {
       background: var(--bg-surface);
       font-size: 1.2rem;
-      line-height: 1;
       padding: 0.3rem 0.7rem;
     }
 
-    /* views */
+    /* ビュー切り替え */
     .view {
       display: none;
       animation: fade 0.2s ease;
@@ -114,7 +110,7 @@
       to { opacity: 1; transform: translateY(0);}
     }
 
-    /* cards grid */
+    /* カード共通 */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -136,10 +132,11 @@
       width: 100%;
       height: 220px;
       object-fit: cover;
+      cursor: pointer;
     }
     .map-img {
       width: 100%;
-      max-height: 180px;  /* 大きく表示 */
+      max-height: 180px;
       object-fit: cover;
       margin: 0.8rem 0;
       border-radius: 0.75rem;
@@ -195,29 +192,8 @@
       background: var(--accent);
       color: #0a192f;
     }
-    a {
-      text-decoration: none;
-    }
-    .section-title {
-      font-size: 1.8rem;
-      margin: 0.5rem 0 1.2rem 0;
-      border-left: 5px solid var(--accent);
-      padding-left: 1rem;
-    }
-    .sub-islands {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    .back-bar {
-      margin-bottom: 1.5rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
 
-    /* detail page */
+    /* 詳細ページ */
     .detail-container {
       background: var(--bg-card);
       border-radius: 1.5rem;
@@ -231,10 +207,6 @@
       border-radius: 1.2rem;
       margin-bottom: 1.5rem;
     }
-    .detail-info h2 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
     .detail-block {
       margin: 1.8rem 0;
     }
@@ -243,8 +215,14 @@
       margin-bottom: 0.75rem;
       color: var(--accent);
     }
+    .back-bar {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
 
-    /* footer */
+    /* フッター */
     .footer {
       margin-top: 3rem;
       padding: 2rem 0 1.5rem;
@@ -272,10 +250,7 @@
     }
 
     @media (max-width: 640px) {
-      .app-container {
-        padding: 0.8rem;
-      }
-      .cards-grid, .sub-islands {
+      .cards-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -286,31 +261,31 @@
   <div class="header">
     <h1>🌊 Yaeyama & Miyako<br><span style="font-size:0.8rem;">Islands Guide</span></h1>
     <div class="controls">
-      <select id="languageSelector" aria-label="Language">
+      <select id="languageSelector">
         <option value="en">🇬🇧 English</option>
         <option value="it">🇮🇹 Italiano</option>
         <option value="ru">🇷🇺 Русский</option>
         <option value="ja">🇯🇵 日本語</option>
       </select>
-      <button id="themeToggle" class="theme-btn" aria-label="Dark/Light mode">🌙</button>
+      <button id="themeToggle" class="theme-btn">🌙</button>
     </div>
   </div>
 
-  <!-- ビュー1: メインページ (石垣島・宮古島のみ) -->
+  <!-- 第一層: メインページ（石垣島・宮古島のみ） -->
   <div id="homeView" class="view active">
     <div class="cards-grid" id="mainIslandsGrid"></div>
   </div>
 
-  <!-- ビュー2: 周辺島一覧 (八重山 or 宮古諸島) -->
+  <!-- 第二層: 周辺島一覧（八重山 or 宮古諸島） -->
   <div id="listView" class="view">
     <div class="back-bar">
       <button id="backToHomeFromList" class="btn">← メインページへ戻る</button>
     </div>
     <h2 id="listTitle" class="section-title"></h2>
-    <div id="surroundingGrid" class="sub-islands"></div>
+    <div id="surroundingGrid" class="cards-grid"></div>
   </div>
 
-  <!-- ビュー3: 詳細ページ -->
+  <!-- 第三層: 詳細ページ -->
   <div id="detailView" class="view">
     <div class="back-bar">
       <button id="backToListBtn" class="btn">← 一覧へ戻る</button>
@@ -329,24 +304,22 @@
       Contact us<br>
       <a href="mailto:mementomorikatsu@gmail.com">mementomorikatsu@gmail.com</a>
     </div>
-    <small>© Yaeyama & Miyako Guide · PWA対応</small>
+    <small>© Yaeyama & Miyako Guide · インストール可能なPWA</small>
   </div>
 </div>
 
 <script>
-  // ----- 多言語辞書 (UI + 詳細) -----
+  // ----- 多言語データ -----
   const translations = {
-    en: { 
+    en: {
       ishigaki_desc: "Gateway to the Yaeyama islands, famous for lush nature, stunning beaches, and vibrant coral reefs.",
       miyako_desc: "Crystal-clear waters, white sand beaches, and a unique bridge culture connecting beautiful offshore islands.",
       official_site: "Official Site",
-      details_btn: "Details",
-      surrounding_btn: "View Surrounding Islands",
+      details: "Details",
+      surrounding: "View Surrounding Islands",
       access: "Access",
       sights: "Sights",
       tips: "Travel Tips",
-      back_home: "Back to Main",
-      back_list: "Back to List",
       yaeyama_title: "Yaeyama Islands (Around Ishigaki)",
       miyako_title: "Miyako Islands (Around Miyako)"
     },
@@ -354,13 +327,11 @@
       ishigaki_desc: "Porta delle isole Yaeyama, famosa per la natura rigogliosa, spiagge mozzafiato e barriere coralline.",
       miyako_desc: "Acque cristalline, spiagge di sabbia bianca e una cultura unica di ponti che collegano bellissime isole al largo.",
       official_site: "Sito Ufficiale",
-      details_btn: "Dettagli",
-      surrounding_btn: "Vedi Isole Circostanti",
+      details: "Dettagli",
+      surrounding: "Vedi Isole Circostanti",
       access: "Accesso",
       sights: "Attrazioni",
       tips: "Consigli di viaggio",
-      back_home: "Torna alla Home",
-      back_list: "Torna all'Elenco",
       yaeyama_title: "Isole Yaeyama (Intorno a Ishigaki)",
       miyako_title: "Isole Miyako (Intorno a Miyako)"
     },
@@ -368,13 +339,11 @@
       ishigaki_desc: "Ворота на острова Яэяма, известные пышной природой, потрясающими пляжами и яркими коралловыми рифами.",
       miyako_desc: "Прозрачная вода, белоснежные пляжи и уникальная культура мостов, соединяющих красивые отдаленные острова.",
       official_site: "Официальный сайт",
-      details_btn: "Подробнее",
-      surrounding_btn: "Посмотреть окрестные острова",
+      details: "Подробнее",
+      surrounding: "Посмотреть окрестные острова",
       access: "Как добраться",
       sights: "Достопримечательности",
       tips: "Советы путешественникам",
-      back_home: "На главную",
-      back_list: "Назад к списку",
       yaeyama_title: "Острова Яэяма (вокруг Исигаки)",
       miyako_title: "Острова Мияко (вокруг Мияко)"
     },
@@ -382,32 +351,30 @@
       ishigaki_desc: "八重山諸島の玄関口。豊かな自然、絶景ビーチ、活気ある珊瑚礁で有名。",
       miyako_desc: "透き通る海、白砂のビーチ、美しい離島を結ぶユニークな橋の文化。",
       official_site: "公式サイト",
-      details_btn: "詳細を見る",
-      surrounding_btn: "周辺の島々を見る",
+      details: "詳細を見る",
+      surrounding: "周辺の島々を見る",
       access: "アクセス",
       sights: "見どころ",
       tips: "旅行のヒント",
-      back_home: "メインページへ",
-      back_list: "一覧へ戻る",
       yaeyama_title: "八重山諸島（石垣島周辺）",
       miyako_title: "宮古諸島（宮古島周辺）"
     }
   };
 
-  // ----- 島のデータ (メイン島＋周辺島すべて) -----
+  // ----- 島のデータ（メイン+周辺すべて）-----
   const islandsData = {
     ishigaki: {
-      id: "ishigaki", nameEn: "Ishigaki Island", nameJa: "石垣島", nameIt: "Ishigaki", nameRu: "Исигаки",
+      id: "ishigaki", name: "Ishigaki",
       mainImg: "https://ishigaki-tours.com/wp-content/uploads/2018/01/313-3.jpg",
       mapImg: "https://www.samuraitours.com/wp-content/uploads/2020/05/e_top_map.gif",
       officialUrl: "https://visitokinawa.jp/",
       desc: { en: "Ishigaki is the main transport hub of Yaeyama, offering breathtaking beaches, Mount Omoto, and amazing snorkeling.", it: "Ishigaki è l'hub principale di Yaeyama, offre spiagge mozzafiato, Monte Omoto e ottimo snorkeling.", ru: "Исигаки — главный транспортный узел Яэямы, захватывающие пляжи, гора Омото и сноркелинг.", ja: "石垣島は八重山の主要玄関口。絶景のビーチ、於茂登岳、素晴らしいシュノーケリング。" },
       access: { en: "Flights from Tokyo, Osaka, Naha to New Ishigaki Airport. Ferries to nearby islands.", it: "Voli da Tokyo, Osaka, Naha per Nuovo Aeroporto di Ishigaki. Traghetti per isole vicine.", ru: "Авиарейсы из Токио, Осаки, Нахи в новый аэропорт Исигаки. Паромы на соседние острова.", ja: "東京・大阪・那覇から新石垣空港へ。周辺島へのフェリーあり。" },
       sights: { en: "Kabira Bay, Yonehara Beach, Ishigaki Yaima Village, sunset at Fusaki Beach.", it: "Baia di Kabira, Spiaggia Yonehara, Villaggio Yaima, tramonto a Fusaki Beach.", ru: "Бухта Кабира, пляж Йонехара, деревня Яима, закат на пляже Фусаки.", ja: "川平湾、米原ビーチ、石垣やいま村、フサキビーチの夕日。" },
-      tips: { en: "Rent a car to explore; best season April–October.", it: "Noleggia un'auto per esplorare; migliore stagione aprile–ottobre.", ru: "Арендуйте машину; лучший сезон апрель–октябрь.", ja: "レンタカーが便利。ベストシーズンは4月～10月。" } 
+      tips: { en: "Rent a car to explore; best season April–October.", it: "Noleggia un'auto per esplorare; migliore stagione aprile–ottobre.", ru: "Арендуйте машину; лучший сезон апрель–октябрь.", ja: "レンタカーが便利。ベストシーズンは4月～10月。" }
     },
     miyako: {
-      id: "miyako", nameEn: "Miyako Island", nameJa: "宮古島", nameIt: "Miyako", nameRu: "Мияко",
+      id: "miyako", name: "Miyako",
       mainImg: "https://www.veltra.com/jp/guide/wp-content/uploads/2023/10/pixta_39456562_M-min.jpg",
       mapImg: "https://i0.wp.com/perfect47japan.com/wp-content/uploads/2023/06/Glory-Island-33.jpg?resize=1024%2C683&ssl=1",
       officialUrl: "https://www.miyakotravel.jp/",
@@ -416,165 +383,168 @@
       sights: { en: "Yoshino Kaigan, Sunayama Beach, Irabu Bridge, Cape Higashi-hennazaki.", it: "Yoshino Kaigan, Spiaggia Sunayama, Ponte Irabu, Capo Higashi-hennazaki.", ru: "Йошино Кайган, пляж Сунаяма, мост Ирабу, мыс Хигаси-Хеннадзаки.", ja: "吉野海岸、砂山ビーチ、伊良部大橋、東平安名崎。" },
       tips: { en: "Try Miyako soba, rent bicycle for Irabu island bridge crossing.", it: "Prova il Miyako soba, noleggia bici per attraversare il ponte per Irabu.", ru: "Попробуйте лапшу мияко соба, возьмите велосипед на Ирабу.", ja: "宮古そばを試す。伊良部島への橋を自転車で渡るのもおすすめ。" }
     },
-    // 周辺島
-    iriomote: { nameEn: "Iriomote", nameJa: "西表島", nameIt: "Iriomote", nameRu: "Ириомоте", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Iriomote_Mangrove.jpg/800px-Iriomote_Mangrove.jpg", officialUrl: "https://visitokinawa.jp/", desc: { en: "Wild jungle island, home to Iriomote wildcat and mangrove kayaking.", it: "Isola giungla selvaggia, gatto di Iriomote e kayak nelle mangrovie.", ru: "Дикий джунглевый остров, ириомотская кошка и каякинг в мангровых лесах.", ja: "西表ヤマネコが生息する亜熱帯の森。マングローブカヤック。" }, access: { en: "Ferry from Ishigaki to Iriomote.", it: "Traghetto da Ishigaki a Iriomote.", ru: "Паром из Исигаки на Ириомоте.", ja: "石垣島から高速フェリーで。" }, sights: { en: "Pinaisara Falls, Urauchi River, Hoshizuna Beach.", it: "Cascate Pinaisara, Fiume Urauchi, Spiaggia Hoshizuna.", ru: "Водопад Пинайсара, река Ураути, пляж Хосидзуна.", ja: "ピナイサーラの滝、浦内川、星砂の浜。" }, tips: { en: "Take a guided tour for trekking; prepare insect repellent.", it: "Visita guidata per trekking; antizanzare.", ru: "Возьмите гида для треккинга; репеллент от насекомых.", ja: "トレッキングツアー推奨。虫除け対策。" } },
-    taketomi: { nameEn: "Taketomi", nameJa: "竹富島", nameIt: "Taketomi", nameRu: "Такетоми", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Taketomi_Island_Village.jpg/800px-Taketomi_Island_Village.jpg", officialUrl: "https://visitokinawa.jp/", desc: { en: "Traditional Ryukyu village with red-tiled roofs, water buffalo carts.", it: "Villaggio tradizionale Ryukyu con tetti in tegole rosse, carri trainati da bufali.", ru: "Традиционная деревня Рюкю с красной черепицей, повозки с буйволами.", ja: "赤瓦の美しい集落、水牛車がのんびり歩く。" }, access: { en: "10-min ferry from Ishigaki.", it: "10 min di traghetto da Ishigaki.", ru: "10 минут паромом от Исигаки.", ja: "石垣島から高速船で10分。" }, sights: { en: "Kondoi Beach, Star Sand, Nagominotower.", it: "Spiaggia Kondoi, Sabbia a stella, Nagominotower.", ru: "Пляж Кондой, Звездный песок, башня Нагомино.", ja: "コンドイビーチ、星砂、なごみの塔。" }, tips: { en: "Walk or rent a bicycle; respect local customs.", it: "Cammina o noleggia una bici; rispetta le usanze.", ru: "Ходите пешком или арендуйте велосипед; уважайте местные обычаи.", ja: "自転車か徒歩で。集落のルールを守って。" } },
-    kohama: { nameEn: "Kohama", nameJa: "小浜島", nameIt: "Kohama", nameRu: "Кохама", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Kohama_Island_view.jpg/800px-Kohama_Island_view.jpg", officialUrl: "https://visitokinawa.jp/", desc: { en: "Scenic island known for sugarcane fields and tropical vibe.", it: "Isola pittoresca con canna da zucchero e atmosfera tropicale.", ru: "Живописный остров с полями сахарного тростника.", ja: "さとうきび畑が広がるのどかな島。" }, access: { en: "Ferry from Ishigaki (approx 30min).", it: "Traghetto da Ishigaki (30 min).", ru: "Паром из Исигаки (30 мин).", ja: "石垣港から高速船約30分。" }, sights: { en: "Ufudake Hill, Sugar Road, Kubasaki beach.", it: "Collina Ufudake, Strada dello zucchero, spiaggia Kubasaki.", ru: "Холм Уфудакэ, Сахарная дорога, пляж Кубасаки.", ja: "ウフダキ、シュガーロード、くば崎ビーチ。" }, tips: { en: "Visit during good weather for panoramic hill views.", it: "Visita con bel tempo per viste panoramiche.", ru: "Посетите в хорошую погоду.", ja: "天気の良い日には丘からの絶景。" } },
-    kuro: { nameEn: "Kuro Island", nameJa: "黒島", nameIt: "Kuro", nameRu: "Куро", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Kuroshima_Island_view.jpg/800px-Kuroshima_Island_view.jpg", officialUrl: "https://visitokinawa.jp/", desc: { en: "Peaceful cattle island with crystal shallows.", it: "Isola tranquilla di bovini con acque basse cristalline.", ru: "Спокойный остров с крупным рогатым скотом.", ja: "牛が多く、美しい浅瀬でのんびり。" }, access: { en: "High-speed boat from Ishigaki (25 min).", it: "Barca veloce da Ishigaki (25 min).", ru: "Быстрый катер из Исигаки.", ja: "石垣島から高速艇。" }, sights: { en: "Kuroshima Stellata, Nakamoto Beach, Traditional houses.", it: "Kuroshima Stellata, Spiaggia Nakamoto, case tradizionali.", ru: "Пляж Куросима, дом Накамото.", ja: "黒島展望台、仲本海岸。" }, tips: { en: "Rent a bicycle and circle the island in 1.5h.", it: "Noleggia bicicletta e giro in 1,5 h.", ru: "Арендуйте велосипед.", ja: "レンタサイクルで１周約1.5時間。" } },
-    hatoma: { nameEn: "Hatoma", nameJa: "鳩間島", nameIt: "Hatoma", nameRu: "Хатома", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Hatoma_Island_Aerial.jpg/800px-Hatoma_Island_Aerial.jpg", officialUrl: "https://visitokinawa.jp/", desc: { en: "Remote tiny island with pristine beaches and quiet life.", it: "Piccola isola remota con spiagge incontaminate.", ru: "Маленький уединенный остров с нетронутыми пляжами.", ja: "小さな離島。静かなビーチと星降る夜。" }, access: { en: "Ferry from Iriomote or Ishigaki (seasonal).", it: "Traghetto da Iriomote o Ishigaki.", ru: "Паром с Ириомоте или Исигаки.", ja: "西表島または石垣島から。" }, sights: { en: "Hatoma Beach, Hikido Cape, Sunset viewpoint.", it: "Spiaggia Hatoma, Capo Hikido, tramonto.", ru: "Пляж Хатома, мыс Хикидо.", ja: "鳩間ビーチ、干瀬御嶽。" }, tips: { en: "Limited services; bring essentials.", it: "Servizi limitati; porta l'essenziale.", ru: "Ограниченные услуги.", ja: "事前に食料・飲料の準備を。" } },
-    irabu: { nameEn: "Irabu", nameJa: "伊良部島", nameIt: "Irabu", nameRu: "Ирабу", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/IrabuBridge.jpg/800px-IrabuBridge.jpg", officialUrl: "https://www.miyakotravel.jp/", desc: { en: "Connected by Irabu Bridge to Miyako, rugged cliffs and blue caves.", it: "Collegata da ponte Irabu a Miyako, scogliere e grotte blu.", ru: "Соединен мостом Ирабу с Мияко.", ja: "伊良部大橋で宮古島と直結。青の洞窟。" }, access: { en: "Drive across Irabu Bridge from Miyako Island.", it: "Ponte da Miyako.", ru: "Мост из Мияко.", ja: "宮古島から車で渡橋。" }, sights: { en: "Toguchi no Hama, Blue Grotto, Sawada cliff.", it: "Toguchi no Hama, Grotta Blu, scogliera Sawada.", ru: "Пляж Тогути, Голубой грот.", ja: "渡口の浜、青の洞窟、佐和田の浜。" }, tips: { en: "Snorkeling gear is must for the grotto.", it: "Attrezzatura da snorkeling essenziale.", ru: "Обязательно возьмите маску.", ja: "青の洞窟ではシュノーケルがおすすめ。" } },
-    shimoji: { nameEn: "Shimoji", nameJa: "下地島", nameIt: "Shimoji", nameRu: "Симодзи", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Shimoji_Island.jpg/800px-Shimoji_Island.jpg", officialUrl: "https://www.miyakotravel.jp/", desc: { en: "Famous for airport on reef and scenic ‘17 End’ cliffs.", it: "Famosa per l'aeroporto e scogliere 17 Ends.", ru: "Знаменитый аэропорт и скалы 17 Ends.", ja: "伊良部島の隣、潜水面で有名な「通り池」。"}, access: { en: "Connected by road from Irabu/Miyako.", it: "Strada da Irabu.", ru: "Дорога от Ирабу.", ja: "伊良部島を経由。" }, sights: { en: "Toriike Ponds, 17 Ends, Nishiura Beach.", it: "Stagni Toriike, 17 Ends, spiaggia Nishiura.", ru: "Пруды Ториикэ.", ja: "通り池、17エンド、西浦ビーチ。" }, tips: { en: "Check weather; strong winds often.", it: "Controlla il vento.", ru: "Проверяйте погоду.", ja: "風が強い日あり注意。" } },
-    ikema: { nameEn: "Ikema", nameJa: "池間島", nameIt: "Ikema", nameRu: "Икема", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Ikema_Island_Miyako.jpg/800px-Ikema_Island_Miyako.jpg", officialUrl: "https://www.miyakotravel.jp/", desc: { en: "Linked by Ikema Ohashi bridge, rich with coral and sea turtles.", it: "Ponte Ikema Ohashi, tartarughe marine.", ru: "Мост Икема Охаси, морские черепахи.", ja: "池間大橋で結ばれた島。サンゴとウミガメ。" }, access: { en: "Bridge from Miyako Island.", it: "Ponte da Miyako.", ru: "Мост из Мияко.", ja: "宮古島から池間大橋で渡る。" }, sights: { en: "Ikema Beach, Observatory, Tongue-shaped reef.", it: "Spiaggia Ikema, osservatorio, barriera lingua.", ru: "Пляж Икема, обсерватория.", ja: "池間ビーチ、池間展望台。" }, tips: { en: "Rent bicycle to enjoy coastal road.", it: "Noleggia bici per strada costiera.", ru: "Арендуйте велосипед.", ja: "サイクリングが気持ちいい。" } },
-    kurima: { nameEn: "Kurima", nameJa: "来間島", nameIt: "Kurima", nameRu: "Курима", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Kurima_Island.jpg/800px-Kurima_Island.jpg", officialUrl: "https://www.miyakotravel.jp/", desc: { en: "Small island with beautiful Kurima Bridge and relaxing beach.", it: "Piccola isola con ponte Kurima.", ru: "Маленький остров, мост Курима.", ja: "来間大橋で結ばれ、のどかなビーチ。" }, access: { en: "Kurima Bridge from Miyako (car or bike).", it: "Ponte Kurima.", ru: "Мост Курима.", ja: "宮古島から来間大橋渡る。" }, sights: { en: "Kurima Beach, Ryugujo Observatory, farming village.", it: "Spiaggia Kurima, osservatorio Ryugujo.", ru: "Пляж Курима, обсерватория Рюгудзё.", ja: "来間ビーチ、竜宮城展望台。" }, tips: { en: "Quiet escape, perfect for picnic.", it: "Fuga tranquilla, pic-nic.", ru: "Тихий отдых.", ja: "静かな隠れ家。ピクニックに最適。" } }
+    // 周辺島 (八重山)
+    iriomote: { id: "iriomote", name: "Iriomote", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Iriomote_Mangrove.jpg/800px-Iriomote_Mangrove.jpg", officialUrl: "https://visitokinawa.jp/", desc: { en: "Wild jungle island, home to Iriomote wildcat and mangrove kayaking.", it: "Isola giungla selvaggia, gatto di Iriomote e kayak nelle mangrovie.", ru: "Дикий джунглевый остров, ириомотская кошка и каякинг в мангровых лесах.", ja: "西表ヤマネコが生息する亜熱帯の森。マングローブカヤック。" }, access: { en: "Ferry from Ishigaki to Iriomote.", it: "Traghetto da Ishigaki a Iriomote.", ru: "Паром из Исигаки на Ириомоте.", ja: "石垣島から高速フェリーで。" }, sights: { en: "Pinaisara Falls, Urauchi River, Hoshizuna Beach.", it: "Cascate Pinaisara, Fiume Urauchi, Spiaggia Hoshizuna.", ru: "Водопад Пинайсара, река Ураути, пляж Хосидзуна.", ja: "ピナイサーラの滝、浦内川、星砂の浜。" }, tips: { en: "Take a guided tour for trekking; prepare insect repellent.", it: "Visita guidata per trekking; antizanzare.", ru: "Возьмите гида для треккинга; репеллент от насекомых.", ja: "トレッキングツアー推奨。虫除け対策。" } },
+    taketomi: { id: "taketomi", name: "Taketomi", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Taketomi_Island_Village.jpg/800px-Taketomi_Island_Village.jpg", officialUrl: "https://visitokinawa.jp/", desc: { en: "Traditional Ryukyu village with red-tiled roofs, water buffalo carts.", it: "Villaggio tradizionale Ryukyu con tetti in tegole rosse, carri trainati da bufali.", ru: "Традиционная деревня Рюкю с красной черепицей, повозки с буйволами.", ja: "赤瓦の美しい集落、水牛車がのんびり歩く。" }, access: { en: "10-min ferry from Ishigaki.", it: "10 min di traghetto da Ishigaki.", ru: "10 минут паромом от Исигаки.", ja: "石垣島から高速船で10分。" }, sights: { en: "Kondoi Beach, Star Sand, Nagominotower.", it: "Spiaggia Kondoi, Sabbia a stella, Nagominotower.", ru: "Пляж Кондой, Звездный песок, башня Нагомино.", ja: "コンドイビーチ、星砂、なごみの塔。" }, tips: { en: "Walk or rent a bicycle; respect local customs.", it: "Cammina o noleggia una bici; rispetta le usanze.", ru: "Ходите пешком или арендуйте велосипед; уважайте местные обычаи.", ja: "自転車か徒歩で。集落のルールを守って。" } },
+    kohama: { id: "kohama", name: "Kohama", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Kohama_Island_view.jpg/800px-Kohama_Island_view.jpg", officialUrl: "https://visitokinawa.jp/", desc: { en: "Scenic island known for sugarcane fields and tropical vibe.", it: "Isola pittoresca con canna da zucchero e atmosfera tropicale.", ru: "Живописный остров с полями сахарного тростника.", ja: "さとうきび畑が広がるのどかな島。" }, access: { en: "Ferry from Ishigaki (approx 30min).", it: "Traghetto da Ishigaki (30 min).", ru: "Паром из Исигаки (30 мин).", ja: "石垣港から高速船約30分。" }, sights: { en: "Ufudake Hill, Sugar Road, Kubasaki beach.", it: "Collina Ufudake, Strada dello zucchero, spiaggia Kubasaki.", ru: "Холм Уфудакэ, Сахарная дорога, пляж Кубасаки.", ja: "ウフダキ、シュガーロード、くば崎ビーチ。" }, tips: { en: "Visit during good weather for panoramic hill views.", it: "Visita con bel tempo per viste panoramiche.", ru: "Посетите в хорошую погоду.", ja: "天気の良い日には丘からの絶景。" } },
+    kuro: { id: "kuro", name: "Kuro Island", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Kuroshima_Island_view.jpg/800px-Kuroshima_Island_view.jpg", officialUrl: "https://visitokinawa.jp/", desc: { en: "Peaceful cattle island with crystal shallows.", it: "Isola tranquilla di bovini con acque basse cristalline.", ru: "Спокойный остров с крупным рогатым скотом.", ja: "牛が多く、美しい浅瀬でのんびり。" }, access: { en: "High-speed boat from Ishigaki (25 min).", it: "Barca veloce da Ishigaki (25 min).", ru: "Быстрый катер из Исигаки.", ja: "石垣島から高速艇。" }, sights: { en: "Kuroshima Stellata, Nakamoto Beach, Traditional houses.", it: "Kuroshima Stellata, Spiaggia Nakamoto, case tradizionali.", ru: "Пляж Куросима, дом Накамото.", ja: "黒島展望台、仲本海岸。" }, tips: { en: "Rent a bicycle and circle the island in 1.5h.", it: "Noleggia bicicletta e giro in 1,5 h.", ru: "Арендуйте велосипед.", ja: "レンタサイクルで１周約1.5時間。" } },
+    hatoma: { id: "hatoma", name: "Hatoma", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Hatoma_Island_Aerial.jpg/800px-Hatoma_Island_Aerial.jpg", officialUrl: "https://visitokinawa.jp/", desc: { en: "Remote tiny island with pristine beaches and quiet life.", it: "Piccola isola remota con spiagge incontaminate.", ru: "Маленький уединенный остров с нетронутыми пляжами.", ja: "小さな離島。静かなビーチと星降る夜。" }, access: { en: "Ferry from Iriomote or Ishigaki (seasonal).", it: "Traghetto da Iriomote o Ishigaki.", ru: "Паром с Ириомоте или Исигаки.", ja: "西表島または石垣島から。" }, sights: { en: "Hatoma Beach, Hikido Cape, Sunset viewpoint.", it: "Spiaggia Hatoma, Capo Hikido, tramonto.", ru: "Пляж Хатома, мыс Хикидо.", ja: "鳩間ビーチ、干瀬御嶽。" }, tips: { en: "Limited services; bring essentials.", it: "Servizi limitati; porta l'essenziale.", ru: "Ограниченные услуги.", ja: "事前に食料・飲料の準備を。" } },
+    // 周辺島 (宮古)
+    irabu: { id: "irabu", name: "Irabu", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/IrabuBridge.jpg/800px-IrabuBridge.jpg", officialUrl: "https://www.miyakotravel.jp/", desc: { en: "Connected by Irabu Bridge to Miyako, rugged cliffs and blue caves.", it: "Collegata da ponte Irabu a Miyako, scogliere e grotte blu.", ru: "Соединен мостом Ирабу с Мияко.", ja: "伊良部大橋で宮古島と直結。青の洞窟。" }, access: { en: "Drive across Irabu Bridge from Miyako Island.", it: "Ponte da Miyako.", ru: "Мост из Мияко.", ja: "宮古島から車で渡橋。" }, sights: { en: "Toguchi no Hama, Blue Grotto, Sawada cliff.", it: "Toguchi no Hama, Grotta Blu, scogliera Sawada.", ru: "Пляж Тогути, Голубой грот.", ja: "渡口の浜、青の洞窟、佐和田の浜。" }, tips: { en: "Snorkeling gear is must for the grotto.", it: "Attrezzatura da snorkeling essenziale.", ru: "Обязательно возьмите маску.", ja: "青の洞窟ではシュノーケルがおすすめ。" } },
+    shimoji: { id: "shimoji", name: "Shimoji", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Shimoji_Island.jpg/800px-Shimoji_Island.jpg", officialUrl: "https://www.miyakotravel.jp/", desc: { en: "Famous for airport on reef and scenic ‘17 End’ cliffs.", it: "Famosa per l'aeroporto e scogliere 17 Ends.", ru: "Знаменитый аэропорт и скалы 17 Ends.", ja: "伊良部島の隣、潜水面で有名な「通り池」。" }, access: { en: "Connected by road from Irabu/Miyako.", it: "Strada da Irabu.", ru: "Дорога от Ирабу.", ja: "伊良部島を経由。" }, sights: { en: "Toriike Ponds, 17 Ends, Nishiura Beach.", it: "Stagni Toriike, 17 Ends, spiaggia Nishiura.", ru: "Пруды Ториикэ.", ja: "通り池、17エンド、西浦ビーチ。" }, tips: { en: "Check weather; strong winds often.", it: "Controlla il vento.", ru: "Проверяйте погоду.", ja: "風が強い日あり注意。" } },
+    ikema: { id: "ikema", name: "Ikema", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Ikema_Island_Miyako.jpg/800px-Ikema_Island_Miyako.jpg", officialUrl: "https://www.miyakotravel.jp/", desc: { en: "Linked by Ikema Ohashi bridge, rich with coral and sea turtles.", it: "Ponte Ikema Ohashi, tartarughe marine.", ru: "Мост Икема Охаси, морские черепахи.", ja: "池間大橋で結ばれた島。サンゴとウミガメ。" }, access: { en: "Bridge from Miyako Island.", it: "Ponte da Miyako.", ru: "Мост из Мияко.", ja: "宮古島から池間大橋で渡る。" }, sights: { en: "Ikema Beach, Observatory, Tongue-shaped reef.", it: "Spiaggia Ikema, osservatorio, barriera lingua.", ru: "Пляж Икема, обсерватория.", ja: "池間ビーチ、池間展望台。" }, tips: { en: "Rent bicycle to enjoy coastal road.", it: "Noleggia bici per strada costiera.", ru: "Арендуйте велосипед.", ja: "サイクリングが気持ちいい。" } },
+    kurima: { id: "kurima", name: "Kurima", mainImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Kurima_Island.jpg/800px-Kurima_Island.jpg", officialUrl: "https://www.miyakotravel.jp/", desc: { en: "Small island with beautiful Kurima Bridge and relaxing beach.", it: "Piccola isola con ponte Kurima.", ru: "Маленький остров, мост Курима.", ja: "来間大橋で結ばれ、のどかなビーチ。" }, access: { en: "Kurima Bridge from Miyako (car or bike).", it: "Ponte Kurima.", ru: "Мост Курима.", ja: "宮古島から来間大橋渡る。" }, sights: { en: "Kurima Beach, Ryugujo Observatory, farming village.", it: "Spiaggia Kurima, osservatorio Ryugujo.", ru: "Пляж Курима, обсерватория Рюгудзё.", ja: "来間ビーチ、竜宮城展望台。" }, tips: { en: "Quiet escape, perfect for picnic.", it: "Fuga tranquilla, pic-nic.", ru: "Тихий отдых.", ja: "静かな隠れ家。ピクニックに最適。" } }
   };
 
-  // 周辺島リスト（グループ）
+  // グループ定義
   const yaeyamaGroup = ["iriomote", "taketomi", "kohama", "kuro", "hatoma"];
   const miyakoGroup = ["irabu", "shimoji", "ikema", "kurima"];
 
   let currentLang = "en";
   let currentGroup = "yaeyama"; // 現在表示中の周辺グループ
-  let fromDetailWasList = true;  // 詳細からの戻り先制御
 
-  // 多言語取得ヘルパー
   function t(key) { return translations[currentLang][key] || translations.en[key]; }
 
-  // メインページ描画（石垣島・宮古島カード）
+  // メインページ描画
   function renderHome() {
     const container = document.getElementById("mainIslandsGrid");
     container.innerHTML = `
       <div class="island-card">
-        <img class="card-img" src="${islandsData.ishigaki.mainImg}" alt="Ishigaki">
+        <img class="card-img" src="${islandsData.ishigaki.mainImg}" alt="Ishigaki" data-detail="ishigaki" style="cursor:pointer">
         <div class="card-content">
           <div class="card-title">Ishigaki</div>
           <div class="card-desc">${t('ishigaki_desc')}</div>
-          <img class="map-img" src="${islandsData.ishigaki.mapImg}" alt="Ishigaki Map">
+          <img class="map-img" src="${islandsData.ishigaki.mapImg}" alt="Map">
           <div class="card-links">
             <a href="${islandsData.ishigaki.officialUrl}" target="_blank" class="btn btn-outline">${t('official_site')}</a>
-            <button class="btn btn-primary detail-main-btn" data-detail="ishigaki">${t('details_btn')}</button>
-            <button class="btn btn-primary surrounding-btn" data-group="yaeyama">🌏 ${t('surrounding_btn')}</button>
+            <button class="btn btn-primary detail-main" data-id="ishigaki">${t('details')}</button>
+            <button class="btn btn-primary surrounding-btn" data-group="yaeyama">🌏 ${t('surrounding')}</button>
           </div>
         </div>
       </div>
       <div class="island-card">
-        <img class="card-img" src="${islandsData.miyako.mainImg}" alt="Miyako">
+        <img class="card-img" src="${islandsData.miyako.mainImg}" alt="Miyako" data-detail="miyako" style="cursor:pointer">
         <div class="card-content">
           <div class="card-title">Miyako</div>
           <div class="card-desc">${t('miyako_desc')}</div>
-          <img class="map-img" src="${islandsData.miyako.mapImg}" alt="Miyako Map">
+          <img class="map-img" src="${islandsData.miyako.mapImg}" alt="Map">
           <div class="card-links">
             <a href="${islandsData.miyako.officialUrl}" target="_blank" class="btn btn-outline">${t('official_site')}</a>
-            <button class="btn btn-primary detail-main-btn" data-detail="miyako">${t('details_btn')}</button>
-            <button class="btn btn-primary surrounding-btn" data-group="miyako">🌏 ${t('surrounding_btn')}</button>
+            <button class="btn btn-primary detail-main" data-id="miyako">${t('details')}</button>
+            <button class="btn btn-primary surrounding-btn" data-group="miyako">🌏 ${t('surrounding')}</button>
           </div>
         </div>
       </div>
     `;
-    // イベント再設定
-    document.querySelectorAll('.detail-main-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = btn.getAttribute('data-detail');
-        showDetailView(id, false); // メインから詳細へ（戻り先はホーム）
-      });
+    // 画像クリックでも詳細へ
+    document.querySelectorAll('.card-img[data-detail]').forEach(img => {
+      img.addEventListener('click', () => showDetailView(img.getAttribute('data-detail'), false));
+    });
+    document.querySelectorAll('.detail-main').forEach(btn => {
+      btn.addEventListener('click', () => showDetailView(btn.getAttribute('data-id'), false));
     });
     document.querySelectorAll('.surrounding-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const group = btn.getAttribute('data-group');
-        showIslandList(group);
-      });
+      btn.addEventListener('click', () => showIslandList(btn.getAttribute('data-group')));
     });
   }
 
-  // 周辺島一覧表示
+  // 第二層: 周辺島一覧を表示
   function showIslandList(group) {
     currentGroup = group;
-    const listTitle = document.getElementById("listTitle");
-    listTitle.textContent = group === "yaeyama" ? t('yaeyama_title') : t('miyako_title');
-    const gridContainer = document.getElementById("surroundingGrid");
+    document.getElementById("listTitle").innerHTML = group === "yaeyama" ? t('yaeyama_title') : t('miyako_title');
     const islandIds = group === "yaeyama" ? yaeyamaGroup : miyakoGroup;
-    gridContainer.innerHTML = islandIds.map(id => {
+    const grid = document.getElementById("surroundingGrid");
+    grid.innerHTML = islandIds.map(id => {
       const island = islandsData[id];
-      const name = island.nameEn;
       const desc = (island.desc[currentLang] || island.desc.en).substring(0, 100);
       return `
         <div class="island-card">
-          <img class="card-img" src="${island.mainImg}" alt="${name}" onerror="this.src='https://placehold.co/600x400?text=${name}'">
+          <img class="card-img" src="${island.mainImg}" alt="${island.name}" data-id="${id}" style="cursor:pointer">
           <div class="card-content">
-            <div class="card-title">${name}</div>
+            <div class="card-title">${island.name}</div>
             <div class="card-desc">${desc}...</div>
             <div class="card-links">
               <a href="${island.officialUrl}" target="_blank" class="btn btn-outline">${t('official_site')}</a>
-              <button class="btn btn-primary list-detail-btn" data-id="${id}">${t('details_btn')}</button>
+              <button class="btn btn-primary list-detail" data-id="${id}">${t('details')}</button>
             </div>
           </div>
-        </div>`;
+        </div>
+      `;
     }).join('');
-    // 詳細ボタンイベント
-    document.querySelectorAll('.list-detail-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const islandId = btn.getAttribute('data-id');
-        showDetailView(islandId, true); // 一覧からの遷移
-      });
+    // 画像クリックで詳細へ
+    document.querySelectorAll('#surroundingGrid .card-img').forEach(img => {
+      img.addEventListener('click', () => showDetailView(img.getAttribute('data-id'), true));
     });
-    // ビュー切り替え
+    document.querySelectorAll('.list-detail').forEach(btn => {
+      btn.addEventListener('click', () => showDetailView(btn.getAttribute('data-id'), true));
+    });
     setActiveView('listView');
   }
 
-  // 詳細表示 (fromList: 一覧から来たら戻る先=一覧, それ以外はホーム)
+  // 第三層: 詳細表示
   function showDetailView(islandId, fromList) {
     const island = islandsData[islandId];
     if (!island) return;
-    const detailContainer = document.getElementById("dynamicDetail");
-    const name = island.nameEn;
-    const desc = island.desc[currentLang] || island.desc.en;
-    const access = island.access?.[currentLang] || island.access?.en || "Information not available";
-    const sights = island.sights?.[currentLang] || island.sights?.en || "Not specified";
-    const tips = island.tips?.[currentLang] || island.tips?.en || "No tips yet";
-    detailContainer.innerHTML = `
-      <img class="detail-img" src="${island.mainImg}" alt="${name}" onerror="this.src='https://placehold.co/800x400?text=${name}'">
-      <h2>${name}</h2>
+    const lang = currentLang;
+    const desc = island.desc[lang] || island.desc.en;
+    const access = island.access?.[lang] || island.access?.en || "Information not available";
+    const sights = island.sights?.[lang] || island.sights?.en || "Not specified";
+    const tips = island.tips?.[lang] || island.tips?.en || "No tips yet";
+    const detailHtml = `
+      <img class="detail-img" src="${island.mainImg}" alt="${island.name}">
+      <h2>${island.name}</h2>
       <div class="detail-block"><h3>📖 Description</h3><p>${desc}</p></div>
       <div class="detail-block"><h3>🚢 ${t('access')}</h3><p>${access}</p></div>
       <div class="detail-block"><h3>🌟 ${t('sights')}</h3><p>${sights}</p></div>
       <div class="detail-block"><h3>💡 ${t('tips')}</h3><p>${tips}</p></div>
       <div class="card-links"><a href="${island.officialUrl}" target="_blank" class="btn btn-primary">${t('official_site')}</a></div>
     `;
-    // 戻るボタンの挙動を切り替え
-    const backToListBtn = document.getElementById("backToListBtn");
-    const backToHomeBtn = document.getElementById("backToHomeFromDetail");
+    document.getElementById("dynamicDetail").innerHTML = detailHtml;
+    // 戻るボタンの挙動
+    const backToList = document.getElementById("backToListBtn");
     if (fromList) {
-      backToListBtn.style.display = "inline-flex";
-      backToListBtn.onclick = () => showIslandList(currentGroup);
+      backToList.style.display = "inline-flex";
+      backToList.onclick = () => showIslandList(currentGroup);
     } else {
-      backToListBtn.style.display = "none";
+      backToList.style.display = "none";
     }
-    backToHomeBtn.onclick = () => setActiveView('homeView');
+    document.getElementById("backToHomeFromDetail").onclick = () => setActiveView('homeView');
     setActiveView('detailView');
   }
 
-  // アクティブビュー切替
   function setActiveView(viewId) {
-    document.getElementById('homeView').classList.remove('active');
-    document.getElementById('listView').classList.remove('active');
-    document.getElementById('detailView').classList.remove('active');
+    ['homeView', 'listView', 'detailView'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
     document.getElementById(viewId).classList.add('active');
     window.scrollTo(0,0);
   }
 
-  // 言語切替
-  function applyLanguage() {
-    renderHome(); 
-    if (document.getElementById('listView').classList.contains('active')) {
-      showIslandList(currentGroup);
+  // 言語切替で現在のビューをリフレッシュ
+  function refreshCurrentView() {
+    if (document.getElementById('homeView').classList.contains('active')) renderHome();
+    else if (document.getElementById('listView').classList.contains('active')) showIslandList(currentGroup);
+    // 詳細は保持するが、言語が変わっても詳細内容は古いままになるのを避けるため、詳細表示中なら再描画
+    else if (document.getElementById('detailView').classList.contains('active')) {
+      // 現在表示中の詳細が何かは、DOMから逆引きする簡易実装
+      const detailTitle = document.querySelector('#dynamicDetail h2');
+      if (detailTitle) {
+        const name = detailTitle.innerText;
+        for (let id in islandsData) {
+          if (islandsData[id].name === name) {
+            showDetailView(id, document.getElementById("backToListBtn").style.display !== "none");
+            break;
+          }
+        }
+      }
     }
-    // 詳細がアクティブなら再描画（簡易対応: 詳細は現在のデータを保持）
   }
 
-  // テーマ切替
+  // テーマ管理
   function initTheme() {
-    const savedTheme = localStorage.getItem("theme");
-    const isDark = savedTheme === "dark" || (!savedTheme && true);
-    setTheme(isDark ? "dark" : "light");
+    const saved = localStorage.getItem("theme");
+    if (saved === "light") setTheme("light");
+    else setTheme("dark");
   }
   function setTheme(theme) {
     if (theme === "dark") {
@@ -587,18 +557,17 @@
     localStorage.setItem("theme", theme);
   }
   function toggleTheme() {
-    const isDark = !document.body.classList.contains("light");
-    setTheme(isDark ? "dark" : "light");
+    const isLight = document.body.classList.contains("light");
+    setTheme(isLight ? "dark" : "light");
   }
 
   // 初期化
   function init() {
     initTheme();
-    const langSelect = document.getElementById("languageSelector");
-    langSelect.value = currentLang;
-    langSelect.addEventListener("change", (e) => {
+    document.getElementById("languageSelector").value = currentLang;
+    document.getElementById("languageSelector").addEventListener("change", (e) => {
       currentLang = e.target.value;
-      applyLanguage();
+      refreshCurrentView();
     });
     document.getElementById("themeToggle").addEventListener("click", toggleTheme);
     document.getElementById("backToHomeFromList").addEventListener("click", () => setActiveView('homeView'));
@@ -606,10 +575,10 @@
   }
   init();
 
-  // Service Worker 登録 (PWA)
+  // PWA Service Worker 登録
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(err => console.log("SW registration failed:", err));
+      navigator.serviceWorker.register('sw.js').catch(err => console.log("SW error:", err));
     });
   }
 </script>
